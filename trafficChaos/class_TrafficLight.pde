@@ -12,9 +12,14 @@ class TrafficLight {
   }
 
   void render(boolean lightsR, boolean lightsY, boolean lightsG, boolean walkOn, boolean buttonOn) {
+    // Renders the trafficlight with walksignal and button at xpos, ypos
+    
+    pushMatrix();
+    translate(xpos, ypos);
     renderTrafficLights(lightsR, lightsY, lightsG);
     renderWalkSignal(walkOn);
-    renderButton(buttonOn);
+    renderButton(true);
+    popMatrix();
   }
 
   void update() {
@@ -23,8 +28,7 @@ class TrafficLight {
     switch(state) {
 
     case "RED":
-      renderTrafficLight(true, false, false);
-      renderWalkSignal(true);
+      renderTrafficLight(true, false, false, true);
       if (millis() - start > 2000) {
         state = "RED_YELLOW";
         stateTimer = millis();
@@ -32,29 +36,38 @@ class TrafficLight {
       break;
 
     case "RED_YELLOW":
-
+      renderTrafficLight(true, false, false, false);
+      if (millis() - start > 2000) {
+        state = "GREEN";
+        stateTimer = millis();
+      }
       break;
 
     case "GREEN":
-
+      renderTrafficLight(false, false, true, false);
+      if (millis() - start > 2000) {
+        state = "YELLOW";
+        stateTimer = millis();
+      }
       break;
 
     case "YELLOW":
-
+      renderTrafficLight(false, true, false, false);
+      if (millis() - start > 2000) {
+        state = "RED";
+        stateTimer = millis();
+      }
       break;
     }
 
     //Check the button every frame
     if (buttonPressed()) {
-      renderButton(true);
       state = "RED";
-    } else {
-      renderButton(false);
     }
   }
 
   void renderTrafficLight(boolean redOn, boolean yellowOn, boolean greenOn) {
-    // This function renders a traffic light.
+    // This function renders a traffic light. Origin is in upper left corner
 
     color black = color(0);
     color redLight = color(255, 0, 0 );
@@ -64,7 +77,7 @@ class TrafficLight {
 
     // Render the "box"
     fill(black);
-    rect(100, 100, 100, 300);
+    rect(0, 0, 100, 300);
 
     // Render red light if on
     if (redOn) {
@@ -72,7 +85,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(150, 150, 75, 75);
+    ellipse(50, 50, 75, 75);
 
     // Render yellow light if on
     if (yellowOn) {
@@ -80,7 +93,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(150, 250, 75, 75);
+    ellipse(50, 150, 75, 75);
 
     // Render green light if on
     if (greenOn) {
@@ -88,7 +101,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(150, 350, 75, 75);
+    ellipse(50, 250, 75, 75);
   }
 
   void renderWalkSignal(boolean walk) {
@@ -101,7 +114,7 @@ class TrafficLight {
 
     // Render the "box"
     fill(black);
-    rect(400, 100, 100, 200);
+    rect(100, 0, 100, 200);
 
     // Render red light if on
     if (walk) {
@@ -109,7 +122,7 @@ class TrafficLight {
     } else {
       fill(redLight);
     }
-    ellipse(450, 150, 75, 75);
+    ellipse(350, 50, 75, 75);
 
     // Render green light if on
     if (walk) {
@@ -117,7 +130,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(450, 250, 75, 75);
+    ellipse(350, 150, 75, 75);
   }
 
   void renderButton(boolean buttonOn) {
@@ -127,19 +140,19 @@ class TrafficLight {
     color buttonOnColor = color(182, 179, 203);
 
     fill(black);
-    rect(400, 500, 100, 100);
+    rect(300, 400, 100, 100);
 
     if (buttonOn) {
       fill(buttonOnColor);
     } else {
       fill(buttonOffColor);
     }
-    ellipse(450, 550, 36, 36);
+    ellipse(350, 450, 36, 36);
   }
 
   boolean buttonPressed() {
     // Returns true if the button is pressed, false otherwise
-    if (mousePressed && sqrt(sq(mouseX-450)+sq(mouseY-550)) < 18) {
+    if (mousePressed && sqrt(sq(mouseX-350)+sq(mouseY-450)) < 18) {
       return true;
     } else {
       return false;
