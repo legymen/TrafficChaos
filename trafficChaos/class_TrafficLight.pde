@@ -4,19 +4,19 @@ class TrafficLight {
   int stateTimer;
   float xpos, ypos;
 
-  TrafficLights(_xpos, _ypos) {
+  TrafficLight(float _xpos, float _ypos) {
     xpos = _xpos;
     ypos = _ypos;
     state = "RED";
     stateTimer = millis();
   }
 
-  void render(boolean lightsR, boolean lightsY, boolean lightsG, boolean walkOn, boolean buttonOn) {
+  void render(boolean lightsR, boolean lightsY, boolean lightsG, boolean walkOn) {
     // Renders the trafficlight with walksignal and button at xpos, ypos
-    
+
     pushMatrix();
     translate(xpos, ypos);
-    renderTrafficLights(lightsR, lightsY, lightsG);
+    renderTrafficLight(lightsR, lightsY, lightsG);
     renderWalkSignal(walkOn);
     renderButton(true);
     popMatrix();
@@ -28,32 +28,32 @@ class TrafficLight {
     switch(state) {
 
     case "RED":
-      renderTrafficLight(true, false, false, true);
-      if (millis() - start > 2000) {
+      render(true, false, false, true);
+      if (millis() - stateTimer > 2000) {
         state = "RED_YELLOW";
         stateTimer = millis();
       }
       break;
 
     case "RED_YELLOW":
-      renderTrafficLight(true, false, false, false);
-      if (millis() - start > 2000) {
+      render(true, true, false, false);
+      if (millis() - stateTimer > 2000) {
         state = "GREEN";
         stateTimer = millis();
       }
       break;
 
     case "GREEN":
-      renderTrafficLight(false, false, true, false);
-      if (millis() - start > 2000) {
+      render(false, false, true, false);
+      if (millis() - stateTimer > 2000) {
         state = "YELLOW";
         stateTimer = millis();
       }
       break;
 
     case "YELLOW":
-      renderTrafficLight(false, true, false, false);
-      if (millis() - start > 2000) {
+      render(false, true, false, false);
+      if (millis() - stateTimer > 2000) {
         state = "RED";
         stateTimer = millis();
       }
@@ -114,7 +114,7 @@ class TrafficLight {
 
     // Render the "box"
     fill(black);
-    rect(100, 0, 100, 200);
+    rect(300, 0, 100, 200);
 
     // Render red light if on
     if (walk) {
@@ -152,7 +152,7 @@ class TrafficLight {
 
   boolean buttonPressed() {
     // Returns true if the button is pressed, false otherwise
-    if (mousePressed && sqrt(sq(mouseX-350)+sq(mouseY-450)) < 18) {
+    if (mousePressed && sqrt(sq(mouseX-(xpos+350))+sq(mouseY-(ypos+450))) < 18) {
       return true;
     } else {
       return false;
