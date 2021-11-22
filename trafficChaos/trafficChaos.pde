@@ -8,7 +8,7 @@ void setup() {
 }
 
 void draw() {
-  background(180);
+  background(140);
 
   light1.update();
   light2.update();
