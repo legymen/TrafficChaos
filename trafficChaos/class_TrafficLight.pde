@@ -75,9 +75,11 @@ class TrafficLight {
     color greenLight = color(0, 255, 0);
     color offLight = color(200);
 
+    rectMode(CORNER);
+
     // Render the "box"
     fill(black);
-    rect(0, 0, 100, 300);
+    rect(0, 0, 10, 30);
 
     // Render red light if on
     if (redOn) {
@@ -85,7 +87,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(50, 50, 75, 75);
+    ellipse(5, 5, 7.5, 7.5);
 
     // Render yellow light if on
     if (yellowOn) {
@@ -93,7 +95,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(50, 150, 75, 75);
+    ellipse(5, 15, 7.5, 7.5);
 
     // Render green light if on
     if (greenOn) {
@@ -101,7 +103,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(50, 250, 75, 75);
+    ellipse(5, 25, 7.5, 7.5);
   }
 
   void renderWalkSignal(boolean walk) {
@@ -112,9 +114,11 @@ class TrafficLight {
     color greenLight = color(0, 255, 0);
     color offLight = color(200);
 
+    rectMode(CORNER);
+
     // Render the "box"
     fill(black);
-    rect(300, 0, 100, 200);
+    rect(30, 0, 10, 20);
 
     // Render red light if on
     if (walk) {
@@ -122,7 +126,7 @@ class TrafficLight {
     } else {
       fill(redLight);
     }
-    ellipse(350, 50, 75, 75);
+    ellipse(35, 5, 7.5, 7.5);
 
     // Render green light if on
     if (walk) {
@@ -130,7 +134,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(350, 150, 75, 75);
+    ellipse(35, 15, 7.5, 7.5);
   }
 
   void renderButton(boolean buttonOn) {
@@ -140,19 +144,20 @@ class TrafficLight {
     color buttonOnColor = color(182, 179, 203);
 
     fill(black);
-    rect(300, 400, 100, 100);
+    rectMode(CORNER);
+    rect(30, 40, 10, 10);
 
     if (buttonOn) {
       fill(buttonOnColor);
     } else {
       fill(buttonOffColor);
     }
-    ellipse(350, 450, 36, 36);
+    ellipse(35, 45, 3.6, 3.6);
   }
 
   boolean buttonPressed() {
     // Returns true if the button is pressed, false otherwise
-    if (mousePressed && sqrt(sq(mouseX-(xpos+350))+sq(mouseY-(ypos+450))) < 18) {
+    if (mousePressed && sqrt(sq(mouseX-(xpos+35))+sq(mouseY-(ypos+45))) < 4) {
       return true;
     } else {
       return false;
