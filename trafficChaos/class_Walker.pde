@@ -3,15 +3,14 @@
 // Daniel Shiffman
 // http://natureofcode.com
 
-class Car{
+class Walker{
 
     PVector position;
     PVector velocity;
     PVector acceleration;
     float r, maxForce, maxSpeed;
-    color carColor = color(255, 0, 0);
 
-    Car(PVector _position, float _maxSpeed, float _maxForce){
+    Walker(PVector _position, float _maxSpeed, float _maxForce){
         position = _position.get();
         r = 4.0;
         maxSpeed = _maxSpeed;
@@ -41,9 +40,7 @@ class Car{
         pushMatrix();
         translate(position.x, position.y);
         rotate(angle);
-        rectMode(CENTER);
-        rect(0, 0, 6, 20);
-        rect(0, 0, 6, 10);
+        ellipse(0, 0, 100, 50); // Do something with a sprite sheet
         popMatrix();
     }
 
