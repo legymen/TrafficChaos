@@ -10,6 +10,13 @@ class Walker{
     PVector acceleration;
     float r, maxForce, maxSpeed;
 
+    PImage spriteSheet;
+    PImage[][] movement;
+    boolean inMotion;
+    int currentDirection;
+    float currentFrame;
+    final int UP = 0, LEFT = 1, DOWN = 2, RIGHT = 3;
+
     Walker(PVector _position, float _maxSpeed, float _maxForce){
         position = _position.get();
         r = 4.0;
@@ -17,6 +24,12 @@ class Walker{
         maxForce = _maxForce;
         acceleration = new PVector(0, 0);
         velocity = new PVector(maxSpeed, 0);
+
+        setupSprites();
+        inMotion = false;
+        currentDirection = 1;
+        currentFrame = 0;
+
     }
 
     void run(){
@@ -25,23 +38,48 @@ class Walker{
     }
 
     void update(){
+        // Code for handling the movement
         velocity.add(acceleration);
         velocity.limit(maxSpeed);
-        
         position.add(velocity);
-
         acceleration.mult(0);
+
+        // Updating variables needed for the sprite sheet
+        currentFrame = (currentFrame + 0.5) % 8;
+        inMotion = true;
+        float angle = degrees(velocity.heading());
+        if (angle >= -45 && angle <= 45){
+            currentDirection = RIGHT;
+        } else if (angle > 45 && angle < 135){
+            currentDirection = UP;
+        } else if (angle >= 135 || angle <= -135){
+            currentDirection = LEFT;
+        } else if (angle < -45 && angle > -135){
+            currentDirection = DOWN;
+        }
+
     }
 
     void render(){
-        float angle = velocity.heading2D() + radians(90);
-        fill(carColor);
-        stroke(0);
-        pushMatrix();
-        translate(position.x, position.y);
-        rotate(angle);
-        ellipse(0, 0, 100, 50); // Do something with a sprite sheet
-        popMatrix();
+
+        if(inMotion){
+            image(movement[currentDirection][1 + int(currentFrame)], position.x, position.y);
+        } else {
+            image(movement[currentDirection][0], position.x, position.y);
+        }
+
+    }
+
+    void setupSprites(){
+        movement = new PImage[4][9];
+        spriteSheet = loadImage("images/theprofessor.png");
+        for(int i = 0; i < 9; i++){
+            movement[0][i] = spriteSheet.get(16 + 64 * i, 8, 32, 56);
+            movement[1][i] = spriteSheet.get(16 + 64 * i, 72, 32, 56);
+            movement[2][i] = spriteSheet.get(16 + 64 * i, 136, 32, 56);
+            movement[3][i] = spriteSheet.get(16 + 64 * i, 200, 32, 56);
+        }
+
     }
 
     void applyForce(PVector force) {
