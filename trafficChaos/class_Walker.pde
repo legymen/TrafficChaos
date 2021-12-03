@@ -27,7 +27,7 @@ class Walker{
 
         setupSprites();
         inMotion = false;
-        currentDirection = 1;
+        currentDirection = LEFT;
         currentFrame = 0;
 
     }
@@ -79,7 +79,6 @@ class Walker{
             movement[2][i] = spriteSheet.get(16 + 64 * i, 136, 32, 56);
             movement[3][i] = spriteSheet.get(16 + 64 * i, 200, 32, 56);
         }
-
     }
 
     void applyForce(PVector force) {
