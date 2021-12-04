@@ -27,7 +27,7 @@ class Walker{
 
         setupSprites();
         inMotion = false;
-        currentDirection = LEFT;
+        currentDirection = 1;
         currentFrame = 0;
 
     }
@@ -79,6 +79,7 @@ class Walker{
             movement[2][i] = spriteSheet.get(16 + 64 * i, 136, 32, 56);
             movement[3][i] = spriteSheet.get(16 + 64 * i, 200, 32, 56);
         }
+
     }
 
     void applyForce(PVector force) {
@@ -122,37 +123,37 @@ class Walker{
         // Loop through all points of the path
         for (int i = 0; i < p.points.size()-1; i++) {
 
-        // Look at a line segment
-        PVector a = p.points.get(i);
-        PVector b = p.points.get(i+1);
+            // Look at a line segment
+            PVector a = p.points.get(i);
+            PVector b = p.points.get(i+1);
 
-        // Get the normal point to that line
-        PVector normalPoint = getNormalPoint(predictpos, a, b);
-        // This only works because we know our path goes from left to right
-        // We could have a more sophisticated test to tell if the point is in the line segment or not
-        if (normalPoint.x < a.x || normalPoint.x > b.x) {
-            // This is something of a hacky solution, but if it's not within the line segment
-            // consider the normal to just be the end of the line segment (point b)
-            normalPoint = b.get();
-        }
+            // Get the normal point to that line
+            PVector normalPoint = getNormalPoint(predictpos, a, b);
+            // This only works because we know our path goes from left to right
+            // We could have a more sophisticated test to tell if the point is in the line segment or not
+            if (normalPoint.x < a.x || normalPoint.x > b.x) {
+                // This is something of a hacky solution, but if it's not within the line segment
+                // consider the normal to just be the end of the line segment (point b)
+                normalPoint = b.get();
+            }
 
-        // How far away are we from the path?
-        float distance = PVector.dist(predictpos, normalPoint);
-        // Did we beat the record and find the closest line segment?
-        if (distance < worldRecord) {
-            worldRecord = distance;
-            // If so the target we want to steer towards is the normal
-            normal = normalPoint;
+            // How far away are we from the path?
+            float distance = PVector.dist(predictpos, normalPoint);
+            // Did we beat the record and find the closest line segment?
+            if (distance < worldRecord) {
+                worldRecord = distance;
+                // If so the target we want to steer towards is the normal
+                normal = normalPoint;
 
-            // Look at the direction of the line segment so we can seek a little bit ahead of the normal
-            PVector dir = PVector.sub(b, a);
-            dir.normalize();
-            // This is an oversimplification
-            // Should be based on distance to path & velocity
-            dir.mult(10);
-            target = normalPoint.get();
-            target.add(dir);
-        }
+                // Look at the direction of the line segment so we can seek a little bit ahead of the normal
+                PVector dir = PVector.sub(b, a);
+                dir.normalize();
+                // This is an oversimplification
+                // Should be based on distance to path & velocity
+                dir.mult(10);
+                target = normalPoint.get();
+                target.add(dir);
+            }
         }
 
         // Only if the distance is greater than the path's radius do we bother to steer
