@@ -51,11 +51,11 @@ class Walker{
         if (angle >= -45 && angle <= 45){
             currentDirection = RIGHT;
         } else if (angle > 45 && angle < 135){
-            currentDirection = UP;
+            currentDirection = DOWN;
         } else if (angle >= 135 || angle <= -135){
             currentDirection = LEFT;
         } else if (angle < -45 && angle > -135){
-            currentDirection = DOWN;
+            currentDirection = UP;
         }
 
     }
@@ -63,9 +63,9 @@ class Walker{
     void render(){
 
         if(inMotion){
-            image(movement[currentDirection][1 + int(currentFrame)], position.x, position.y);
+            image(movement[currentDirection][1 + int(currentFrame)], position.x, position.y - 56);
         } else {
-            image(movement[currentDirection][0], position.x, position.y);
+            image(movement[currentDirection][0], position.x, position.y - 56);
         }
 
     }
