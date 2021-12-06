@@ -3,13 +3,19 @@
 // Daniel Shiffman
 // http://natureofcode.com
 
+/*
+A walker object can steer and follow a path.
+*/
+
 class Walker{
 
+    // Variables for the moving around
     PVector position;
     PVector velocity;
     PVector acceleration;
     float r, maxForce, maxSpeed;
 
+    // Variables for rendering
     PImage spriteSheet;
     PImage[][] movement;
     boolean inMotion;
@@ -17,6 +23,7 @@ class Walker{
     float currentFrame;
     final int UP = 0, LEFT = 1, DOWN = 2, RIGHT = 3;
 
+    // Constructor
     Walker(PVector _position, float _maxSpeed, float _maxForce){
         position = _position.get();
         r = 4.0;
@@ -70,6 +77,7 @@ class Walker{
 
     }
 
+    // Method for setting up the sprite sheet - runs once per instance
     void setupSprites(){
         movement = new PImage[4][9];
         spriteSheet = loadImage("images/theprofessor.png");
@@ -82,10 +90,13 @@ class Walker{
 
     }
 
+    // Applies force by adding to acceleration
+    // here could Newtons second be simulated by dividing by mass
     void applyForce(PVector force) {
         acceleration.add(force);
     }
 
+    // Make the instance go towards a target
     void seek(PVector target){
         PVector desired = PVector.sub(target, position);
 
@@ -110,7 +121,7 @@ class Walker{
         // This could be based on speed 
         PVector predict = velocity.get();
         predict.normalize();
-        predict.mult(50);
+        predict.mult(25);
         PVector predictpos = PVector.add(position, predict);
 
         // Now we must find the normal to the path from the predicted position
@@ -121,21 +132,33 @@ class Walker{
         float worldRecord = 1000000;  // Start with a very high record distance that can easily be beaten
 
         // Loop through all points of the path
-        for (int i = 0; i < p.points.size()-1; i++) {
+        for (int i = 0; i < p.points.size(); i++) {
 
             // Look at a line segment
             PVector a = p.points.get(i);
-            PVector b = p.points.get(i+1);
+            PVector b = p.points.get((i+1) % p.points.size()); // Note Path has to wraparound
 
             // Get the normal point to that line
             PVector normalPoint = getNormalPoint(predictpos, a, b);
-            // This only works because we know our path goes from left to right
-            // We could have a more sophisticated test to tell if the point is in the line segment or not
-            if (normalPoint.x < a.x || normalPoint.x > b.x) {
-                // This is something of a hacky solution, but if it's not within the line segment
-                // consider the normal to just be the end of the line segment (point b)
-                normalPoint = b.get();
+
+
+            // Check if normal is on line segment
+            PVector dir = PVector.sub(b, a);
+            // If it's not within the line segment, consider the normal to just be the end of the line segment (point b)
+            //if (da + db > line.mag()+1) {
+            if (
+                normalPoint.x < min(a.x, b.x) ||
+                normalPoint.x > max(a.x, b.x) ||
+                normalPoint.y < min(a.y, b.y) ||
+                normalPoint.y > max(a.y, b.y)
+            ) {
+                normalPoint = b.copy();
+                // If we're at the end we really want the next line segment for looking ahead
+                a = p.points.get((i + 1) % p.points.size());
+                b = p.points.get((i + 2) % p.points.size()); // Path wraps around
+                dir = PVector.sub(b, a);
             }
+
 
             // How far away are we from the path?
             float distance = PVector.dist(predictpos, normalPoint);
@@ -146,11 +169,10 @@ class Walker{
                 normal = normalPoint;
 
                 // Look at the direction of the line segment so we can seek a little bit ahead of the normal
-                PVector dir = PVector.sub(b, a);
                 dir.normalize();
                 // This is an oversimplification
                 // Should be based on distance to path & velocity
-                dir.mult(10);
+                dir.mult(25);
                 target = normalPoint.get();
                 target.add(dir);
             }
@@ -182,6 +204,7 @@ class Walker{
         }
     }
 
+    // Returns the normal point from point p on the segment ab
     PVector getNormalPoint(PVector p, PVector a, PVector b){
         PVector ap = PVector.sub(p, a);
         PVector ab = PVector.sub(b, a);
@@ -189,13 +212,6 @@ class Walker{
         ab.mult(ap.dot(ab));
         PVector normalPoint = PVector.add(a, ab);
         return normalPoint;
-    }
-
-    void borders(Path p){
-        if (position.x > p.getEnd().x + r){
-            position.x = p.getStart().x - r;
-            position.y = p.getStart().y + (position.y - p.getEnd().y);
-        }
     }
 
 }

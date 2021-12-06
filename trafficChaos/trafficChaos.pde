@@ -1,12 +1,11 @@
 boolean debug = true;
-boolean pressed = false;
+boolean mpressed = false;
 
-String state = "MAKE_PATH";
+String state = "MAKE_PATH1";
 
-Path path1;
+Path path1, path2;
 
-Car car1;
-Car car2;
+Car car1, car2;
 
 Walker walker1, walker2;
 
@@ -16,6 +15,7 @@ void setup() {
   size(1600, 1200);
 
   path1 = new Path();
+  path2 = new Path();
 
   car1 = new Car(new PVector(0, height/2), 2, 0.04);
   car2 = new Car(new PVector(0, height/2), 3, 0.1);
@@ -31,42 +31,55 @@ void draw() {
   background(140);
 
   switch(state) {
-    case("MAKE_PATH"):
-    if (mousePressed && !pressed) {
+
+    //*********MAKE_PATH1**********
+    case("MAKE_PATH1"):
+    if (mousePressed && !mpressed) {
       path1.addPoint(mouseX, mouseY);
-      pressed = true;
+      mpressed = true;
     } else {
-      pressed = false;
+      mpressed = false;
     }
-    if (keyPressed && key == 'd') {
-      state = "RUN";
-    }    
+    if (keyPressed && key == '1') {
+      state = "MAKE_PATH2";
+    }  
     path1.render();   
     break;
 
+    //*********MAKE_PATH2**********
+    case("MAKE_PATH2"):
+    if (mousePressed && !mpressed) {
+      path2.addPoint(mouseX, mouseY);
+      mpressed = true;
+    } else {
+      mpressed = false;
+    }
+    if (keyPressed && key == '2') {
+      state = "RUN";
+    }
+    path1.render();
+    path2.render();  
+    break;
+
+    //*********RUN**********
     case("RUN"):
     path1.render();
+    path2.render();
 
-/*     car1.follow(path1);
+    car1.follow(path1);
     car2.follow(path1);
 
     car1.run();
     car2.run();
 
-    car1.borders(path1);
-    car2.borders(path1); */
-
-    walker1.follow(path1);
-    // walker2.follow(path1);
+    walker1.follow(path2);
+    walker2.follow(path2);
 
     walker1.run();
-    // walker2.run();
+    walker2.run();
 
-    walker1.borders(path1);
-    // walker2.borders(path1);
-
-    // light1.update();
-    // light2.update();
+    light1.update();
+    light2.update();
     break;
   }
 }
