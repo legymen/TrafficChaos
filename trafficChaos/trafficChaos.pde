@@ -1,3 +1,7 @@
+int numberOfWalkers = 10;
+float walkerMaxSpeed = 0.8;
+float walkerMaxForce = 0.02;
+
 boolean debug = true;
 boolean mpressed = false;
 
@@ -7,8 +11,7 @@ Path path1, path2;
 
 Car car1, car2;
 
-Walker walker1, walker2;
-
+ArrayList<Walker> walkers;
 TrafficLight light1, light2;
 
 void setup() {
@@ -20,8 +23,11 @@ void setup() {
   car1 = new Car(new PVector(0, height/2), 2, 0.04);
   car2 = new Car(new PVector(0, height/2), 3, 0.1);
 
-  walker1 = new Walker(new PVector(0, height/2), 2, 0.04);
-  walker2 = new Walker(new PVector(0, height/2), 3, 0.1);
+  walkers = new ArrayList<Walker>();
+
+  for (int i = 0; i < numberOfWalkers; i++){
+    walkers.add(new Walker(new PVector(random(0,width), random(0,height)), walkerMaxSpeed, walkerMaxForce));
+  }
 
   light1 = new TrafficLight(50, 200);
   light2 = new TrafficLight(800, 300);
@@ -72,11 +78,11 @@ void draw() {
     car1.run();
     car2.run();
 
-    walker1.follow(path2);
-    walker2.follow(path2);
-
-    walker1.run();
-    walker2.run();
+    for (int i = 0; i < walkers.size(); i++) {
+      Walker walker = walkers.get(i);
+      walker.follow(path2);
+      walker.run();
+    }
 
     light1.update();
     light2.update();
