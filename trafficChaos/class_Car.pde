@@ -47,6 +47,15 @@ class Car{
         popMatrix();
     }
 
+    void checkCollision(ArrayList<Walker> walkers){
+        for(Walker walker : walkers){
+            if (position.dist(walker.position) < 20){
+                state = "GAME_OVER";
+                break;
+            }
+        }
+    }
+
     void applyForce(PVector force) {
         acceleration.add(force);
     }

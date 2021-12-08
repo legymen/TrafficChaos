@@ -75,17 +75,30 @@ void draw() {
     car1.follow(path1);
     car2.follow(path1);
 
-    car1.run();
-    car2.run();
-
     for (int i = 0; i < walkers.size(); i++) {
       Walker walker = walkers.get(i);
       walker.follow(path2);
       walker.run();
     }
 
+    car1.run();
+    car2.run();
+    car1.checkCollision(walkers);
+    car2.checkCollision(walkers);
+
+
     light1.update();
     light2.update();
+    break;
+
+
+    //**********GAME_OVER*************
+    case("GAME_OVER"):
+    background(0);
+    textSize(100);
+    fill(255);
+    textAlign(CENTER);
+    text("GAME OVER", width/2, height/2);
     break;
   }
 }
