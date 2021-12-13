@@ -1,6 +1,9 @@
 int numberOfWalkers = 10;
+int numberOfCars = 3;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
+float carMaxSpeed = 2.8;
+float carMaxForce = 0.05;
 
 boolean debug = true;
 boolean mpressed = false;
@@ -9,10 +12,9 @@ String state = "MAKE_PATH1";
 
 Path path1, path2;
 
-Car car1, car2;
-
+ArrayList<Car> cars;
 ArrayList<Walker> walkers;
-TrafficLight light1, light2;
+ArrayList<TrafficLight> lights;
 
 void setup() {
   size(1600, 1200);
@@ -20,17 +22,18 @@ void setup() {
   path1 = new Path();
   path2 = new Path();
 
-  car1 = new Car(new PVector(0, height/2), 2, 0.04);
-  car2 = new Car(new PVector(0, height/2), 3, 0.1);
+
+  cars = new ArrayList<Car>();
+  for (int i = 0; i < numberOfCars; i++){
+    cars.add(new Car(new PVector(random(0,width), random(0,height)), carMaxSpeed, carMaxForce));
+  }
 
   walkers = new ArrayList<Walker>();
-
   for (int i = 0; i < numberOfWalkers; i++){
     walkers.add(new Walker(new PVector(random(0,width), random(0,height)), walkerMaxSpeed, walkerMaxForce));
   }
 
-  light1 = new TrafficLight(50, 200);
-  light2 = new TrafficLight(800, 300);
+  lights = new ArrayList<TrafficLight>();
 }
 
 void draw() {
@@ -61,10 +64,33 @@ void draw() {
       mpressed = false;
     }
     if (keyPressed && key == '2') {
-      state = "RUN";
+      state = "PLACE_LIGHTS";
     }
     path1.render();
     path2.render();  
+    break;
+
+
+    //*********PLACE_LIGHTS**********
+    case("PLACE_LIGHTS"):
+    if (mousePressed && !mpressed) {
+      lights.add(new TrafficLight(mouseX, mouseY));
+      mpressed = true;
+    } else {
+      mpressed = false;
+    }
+    if (keyPressed && key == '3') {
+      state = "RUN";
+    }
+
+    path1.render();
+    path2.render();
+
+    for (int i = 0; i < lights.size(); i++) {
+      TrafficLight light = lights.get(i);
+      light.update();
+    }
+
     break;
 
     //*********RUN**********
@@ -72,8 +98,6 @@ void draw() {
     path1.render();
     path2.render();
 
-    car1.follow(path1);
-    car2.follow(path1);
 
     for (int i = 0; i < walkers.size(); i++) {
       Walker walker = walkers.get(i);
@@ -81,14 +105,17 @@ void draw() {
       walker.run();
     }
 
-    car1.run();
-    car2.run();
-    car1.checkCollision(walkers);
-    car2.checkCollision(walkers);
+    for (int i = 0; i < cars.size(); i++) {
+      Car car = cars.get(i);
+      car.follow(path1);
+      car.run();
+      car.checkCollision(walkers);
+    }
 
-
-    light1.update();
-    light2.update();
+    for (int i = 0; i < lights.size(); i++) {
+      TrafficLight light = lights.get(i);
+      light.update();
+    }
     break;
 
 
