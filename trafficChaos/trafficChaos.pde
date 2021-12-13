@@ -1,4 +1,4 @@
-int numberOfWalkers = 10;
+int numberOfWalkers = 0;
 int numberOfCars = 3;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
@@ -110,6 +110,7 @@ void draw() {
       car.follow(path1);
       car.run();
       car.checkCollision(walkers);
+      car.checkStopLights(lights);
     }
 
     for (int i = 0; i < lights.size(); i++) {
@@ -127,11 +128,5 @@ void draw() {
     textAlign(CENTER);
     text("GAME OVER", width/2, height/2);
     break;
-  }
-}
-
-public void keyPressed() {
-  if (key == ' ') {
-    debug = !debug;
   }
 }

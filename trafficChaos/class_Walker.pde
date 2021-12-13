@@ -183,25 +183,6 @@ class Walker{
             seek(target);
         }
 
-
-        // Draw the debugging stuff
-        if (debug) {
-        // Draw predicted future position
-            stroke(0);
-            fill(0);
-            line(position.x, position.y, predictpos.x, predictpos.y);
-            ellipse(predictpos.x, predictpos.y, 4, 4);
-
-            // Draw normal position
-            stroke(0);
-            fill(0);
-            ellipse(normal.x, normal.y, 4, 4);
-            // Draw actual target (red if steering towards it)
-            line(predictpos.x, predictpos.y, normal.x, normal.y);
-            if (worldRecord > p.radius) fill(255, 0, 0);
-            noStroke();
-            ellipse(target.x, target.y, 8, 8);
-        }
     }
 
     // Returns the normal point from point p on the segment ab

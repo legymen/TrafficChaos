@@ -10,6 +10,7 @@ class Car{
     PVector acceleration;
     float r, maxForce, maxSpeed;
     color carColor = color(255, 0, 0);
+    String state = "DRIVE";
 
     Car(PVector _position, float _maxSpeed, float _maxForce){
         position = _position.get();
@@ -26,12 +27,21 @@ class Car{
     }
 
     void update(){
-        velocity.add(acceleration);
-        velocity.limit(maxSpeed);
-        
-        position.add(velocity);
 
-        acceleration.mult(0);
+        switch(state){
+            case("DRIVE"):
+            velocity.add(acceleration);
+            velocity.limit(maxSpeed);
+        
+            position.add(velocity);
+
+            acceleration.mult(0);
+            break;
+
+            case("STOP"):
+            break;
+        }
+
     }
 
     void render(){
@@ -44,6 +54,13 @@ class Car{
         rectMode(CENTER);
         rect(0, 0, 6, 20);
         rect(0, 0, 6, 10);
+
+        if (state == "STOP"){
+            fill(255);
+            textSize(50);
+            text("STOP", 0, 0);
+        }
+
         popMatrix();
     }
 
@@ -51,6 +68,16 @@ class Car{
         for(Walker walker : walkers){
             if (position.dist(walker.position) < 20){
                 state = "GAME_OVER";
+                break;
+            }
+        }
+    }
+
+    void checkStopLights(ArrayList<TrafficLight> lights){
+        state = "DRIVE";
+        for(TrafficLight light : lights){
+            if (position.dist(light.position) < 150 && light.state == "RED"){
+                state = "STOP";
                 break;
             }
         }
@@ -146,25 +173,6 @@ class Car{
             seek(target);
         }
 
-
-        // Draw the debugging stuff
-        if (debug) {
-        // Draw predicted future position
-            stroke(0);
-            fill(0);
-            line(position.x, position.y, predictpos.x, predictpos.y);
-            ellipse(predictpos.x, predictpos.y, 4, 4);
-
-            // Draw normal position
-            stroke(0);
-            fill(0);
-            ellipse(normal.x, normal.y, 4, 4);
-            // Draw actual target (red if steering towards it)
-            line(predictpos.x, predictpos.y, normal.x, normal.y);
-            if (worldRecord > p.radius) fill(255, 0, 0);
-            noStroke();
-            ellipse(target.x, target.y, 8, 8);
-        }
     }
 
     PVector getNormalPoint(PVector p, PVector a, PVector b){

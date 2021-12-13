@@ -4,11 +4,15 @@ class TrafficLight {
   int stateTimer;
   float xpos, ypos;
 
+  PVector position; // Initially this class was made without vectors but other classes need them
+
   TrafficLight(float _xpos, float _ypos) {
     xpos = _xpos;
     ypos = _ypos;
     state = "RED";
     stateTimer = millis();
+
+    position = new PVector(xpos, ypos);
   }
 
   void render(boolean lightsR, boolean lightsY, boolean lightsG, boolean walkOn) {
