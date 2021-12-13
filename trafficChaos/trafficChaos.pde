@@ -1,4 +1,4 @@
-int numberOfWalkers = 0;
+int numberOfWalkers = 10;
 int numberOfCars = 3;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
@@ -8,7 +8,7 @@ float carMaxForce = 0.05;
 boolean debug = true;
 boolean mpressed = false;
 
-String state = "MAKE_PATH1";
+String gameState = "MAKE_PATH1";
 
 Path path1, path2;
 
@@ -39,7 +39,7 @@ void setup() {
 void draw() {
   background(140);
 
-  switch(state) {
+  switch(gameState) {
 
     //*********MAKE_PATH1**********
     case("MAKE_PATH1"):
@@ -50,7 +50,7 @@ void draw() {
       mpressed = false;
     }
     if (keyPressed && key == '1') {
-      state = "MAKE_PATH2";
+      gameState = "MAKE_PATH2";
     }  
     path1.render();   
     break;
@@ -64,7 +64,7 @@ void draw() {
       mpressed = false;
     }
     if (keyPressed && key == '2') {
-      state = "PLACE_LIGHTS";
+      gameState = "PLACE_LIGHTS";
     }
     path1.render();
     path2.render();  
@@ -80,7 +80,7 @@ void draw() {
       mpressed = false;
     }
     if (keyPressed && key == '3') {
-      state = "RUN";
+      gameState = "RUN";
     }
 
     path1.render();

@@ -67,7 +67,7 @@ class Car{
     void checkCollision(ArrayList<Walker> walkers){
         for(Walker walker : walkers){
             if (position.dist(walker.position) < 20){
-                state = "GAME_OVER";
+                gameState = "GAME_OVER";
                 break;
             }
         }
