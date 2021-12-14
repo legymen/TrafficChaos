@@ -11,6 +11,8 @@ class Car{
     float r, maxForce, maxSpeed;
     color carColor = color(255, 0, 0);
     String state = "DRIVE";
+    
+    PImage carImage;
 
     Car(PVector _position, float _maxSpeed, float _maxForce){
         position = _position.get();
@@ -19,6 +21,8 @@ class Car{
         maxForce = _maxForce;
         acceleration = new PVector(0, 0);
         velocity = new PVector(maxSpeed, 0);
+        
+        carImage = loadImage("images/bil.png");
     }
 
     void run(){
@@ -51,9 +55,8 @@ class Car{
         pushMatrix();
         translate(position.x, position.y);
         rotate(angle);
-        rectMode(CENTER);
-        rect(0, 0, 6, 20);
-        rect(0, 0, 6, 10);
+        imageMode(CENTER);
+        image(carImage, 0, 0);
 
         if (state == "STOP"){
             fill(255);

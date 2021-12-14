@@ -1,4 +1,4 @@
-int numberOfWalkers = 10;
+int numberOfWalkers = 2;
 int numberOfCars = 3;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
