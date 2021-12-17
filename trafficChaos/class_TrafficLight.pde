@@ -19,7 +19,7 @@ class TrafficLight {
     // Renders the trafficlight with walksignal and button at xpos, ypos
 
     pushMatrix();
-    translate(xpos, ypos);
+    translate(xpos - 5, ypos - 100);
     renderTrafficLight(lightsR, lightsY, lightsG);
     renderWalkSignal(walkOn);
     renderButton(true);
