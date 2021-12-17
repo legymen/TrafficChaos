@@ -161,7 +161,7 @@ class TrafficLight {
 
   boolean buttonPressed() {
     // Returns true if the button is pressed, false otherwise
-    if (mousePressed && sqrt(sq(mouseX-(xpos+35))+sq(mouseY-(ypos+45))) < 4) {
+    if (mousePressed && sqrt(sq(mouseX-(xpos - 5 + 35))+sq(mouseY-(ypos - 100 + 45))) < 4) {
       return true;
     } else {
       return false;

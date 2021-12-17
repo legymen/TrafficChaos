@@ -78,36 +78,7 @@ void draw() {
 
   switch(gameState) {
 
-    ////*********MAKE_PATH_CARS**********
-    //case("MAKE_PATH_CARS"):
-    //if (mousePressed && !mpressed) {
-    //  path_cars.addPoint(mouseX, mouseY);
-    //  mpressed = true;
-    //} else {
-    //  mpressed = false;
-    //}
-    //if (keyPressed && key == '1') {
-    //  gameState = "MAKE_PATH_WALKERS";
-    //}  
-    //path_cars.render();   
-    //break;
-
-    ////*********MAKE_PATH_WALKERS**********
-    //case("MAKE_PATH_WALKERS"):
-    //if (mousePressed && !mpressed) {
-    //  path_walkers.addPoint(mouseX, mouseY);
-    //  mpressed = true;
-    //} else {
-    //  mpressed = false;
-    //}
-    //if (keyPressed && key == '2') {
-    //  gameState = "PLACE_LIGHTS";
-    //}
-    //path_cars.render();
-    //path_walkers.render();  
-    //break;
-
-
+  
     //*********PLACE_LIGHTS**********
     case("PLACE_LIGHTS"):
     if (mousePressed && !mpressed) {
@@ -120,7 +91,7 @@ void draw() {
       gameState = "RUN";
     }
 
-    path_cars.render();
+    // path_cars.render();
     path_walkers.render();
 
     for (int i = 0; i < lights.size(); i++) {
@@ -133,8 +104,6 @@ void draw() {
     //*********RUN**********
     case("RUN"):
     // Render the cars and the walkers
-    path_cars.render();
-    path_walkers.render();
 
     // Make the walkers follow the path
     for (int i = 0; i < walkers.size(); i++) {
