@@ -30,7 +30,7 @@ PImage bg;
 void setup() {
   size(1400, 997);
 
-  bg = loadImage("images/bakgrundv2.jpg");
+  bg = loadImage("images/bakgrundv3.jpg");
 
   // Initialize the paths
   path_cars = new Path();
