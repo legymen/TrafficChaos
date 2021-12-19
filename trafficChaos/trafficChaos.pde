@@ -1,3 +1,8 @@
+// File names
+String BACKGROUND_FILE = "images/bakgrundv3.jpg";
+String CAR_PATH_FILE = "carPathPos.txt";
+String WALKER_PATH_FILE = "walkerPathPos.txt";
+
 // Settings variables
 int numberOfWalkers = 2;
 int numberOfCars = 3;
@@ -20,17 +25,12 @@ ArrayList<Car> cars;
 ArrayList<Walker> walkers;
 ArrayList<TrafficLight> lights;
 
-String[] carPathPos;
-String[] carPathCoords;
-String[] walkerPathPos;
-String[] walkerPathCoords;
-
 PImage bg;
 
 void setup() {
   size(1400, 997);
 
-  bg = loadImage("images/bakgrundv3.jpg");
+  bg = loadImage(BACKGROUND_FILE);
 
   // Initialize the paths
   path_cars = new Path();
@@ -52,9 +52,8 @@ void setup() {
   lights = new ArrayList<TrafficLight>();
 
   // read paths from file
-  carPathPos = loadStrings("carPathPos.txt");
-  String entirePlay = join(carPathPos, ',');
-  String[] carPathCoords = split(entirePlay, ",,");
+  String[] carPathPos = loadStrings(CAR_PATH_FILE);
+  String[] carPathCoords = split(join(carPathPos, ','), ",,");
 
   float[] coord;
   for (int i = 0; i < carPathCoords.length; i++) {
@@ -62,9 +61,8 @@ void setup() {
     path_cars.addPoint(coord[0], coord[1]);
   }
 
-  walkerPathPos = loadStrings("walkerPathPos.txt");
-  String wentirePlay = join(walkerPathPos, ',');
-  String[] walkerPathCoords = split(wentirePlay, ",,");
+  String[] walkerPathPos = loadStrings(WALKER_PATH_FILE);
+  String[] walkerPathCoords = split(join(walkerPathPos, ','), ",,");
 
   float[] wcoord;
   for (int i = 0; i < walkerPathCoords.length; i++) {
@@ -78,7 +76,6 @@ void draw() {
 
   switch(gameState) {
 
-  
     //*********PLACE_LIGHTS**********
     case("PLACE_LIGHTS"):
     if (mousePressed && !mpressed) {
@@ -101,11 +98,11 @@ void draw() {
 
     break;
 
+
     //*********RUN**********
     case("RUN"):
-    // Render the cars and the walkers
 
-    // Make the walkers follow the path
+    // Make the walkers follow the path and render them
     for (int i = 0; i < walkers.size(); i++) {
       Walker walker = walkers.get(i);
       walker.follow(path_walkers);
@@ -113,13 +110,13 @@ void draw() {
     }
 
     // Make the cars follow the path and check for
-    // collision and stop lights
+    // collision and stop lights. Render the cars.
     for (int i = 0; i < cars.size(); i++) {
       Car car = cars.get(i);
       car.follow(path_cars);
-      car.run();
       car.checkCollision(walkers);
       car.checkStopLights(lights);
+      car.run();
     }
 
     // Update the lights
