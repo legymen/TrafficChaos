@@ -1,7 +1,8 @@
 // File names
 String BACKGROUND_FILE = "images/bakgrundv3.jpg";
-String CAR_PATH_FILE = "carPathPos.txt";
-String WALKER_PATH_FILE = "walkerPathPos.txt";
+String CAR_PATH_FILE = "textfiles/carPathPos.txt";
+String WALKER_PATH_FILE = "textfiles/walkerPathPos.txt";
+String LIGHTS_POS_FILE = "textfiles/lightsPos.txt";
 
 // Settings variables
 int numberOfWalkers = 2;
@@ -15,7 +16,7 @@ float carMaxForce = 0.05;
 boolean mpressed = false;
 
 // State varable for the game
-String gameState = "PLACE_LIGHTS";
+String gameState = "RUN";
 
 // Paths for cars and walkers
 Path path_cars, path_walkers;
@@ -51,7 +52,7 @@ void setup() {
   // Initialize the light-arraylist
   lights = new ArrayList<TrafficLight>();
 
-  // read paths from file
+  // read carPath from file
   String[] carPathPos = loadStrings(CAR_PATH_FILE);
   String[] carPathCoords = split(join(carPathPos, ','), ",,");
 
@@ -61,6 +62,7 @@ void setup() {
     path_cars.addPoint(coord[0], coord[1]);
   }
 
+  // read walkerPath from file
   String[] walkerPathPos = loadStrings(WALKER_PATH_FILE);
   String[] walkerPathCoords = split(join(walkerPathPos, ','), ",,");
 
@@ -69,35 +71,20 @@ void setup() {
     wcoord = float(split(walkerPathCoords[i], ' '));
     path_walkers.addPoint(wcoord[0], wcoord[1]);
   }
+
+  // read lights from file
+  String[] lightsPos = loadStrings(LIGHTS_POS_FILE);
+
+  for(String s : lightsPos){
+    float[] lcoord = float(split(s, ' '));
+    lights.add(new TrafficLight(lcoord[0], lcoord[1], lcoord[2], lcoord[3]));
+  }
 }
 
 void draw() {
   background(bg);
 
   switch(gameState) {
-
-    //*********PLACE_LIGHTS**********
-    case("PLACE_LIGHTS"):
-    if (mousePressed && !mpressed) {
-      lights.add(new TrafficLight(mouseX, mouseY));
-      mpressed = true;
-    } else {
-      mpressed = false;
-    }
-    if (keyPressed && key == '3') {
-      gameState = "RUN";
-    }
-
-    // path_cars.render();
-    path_walkers.render();
-
-    for (int i = 0; i < lights.size(); i++) {
-      TrafficLight light = lights.get(i);
-      light.update();
-    }
-
-    break;
-
 
     //*********RUN**********
     case("RUN"):
@@ -135,5 +122,9 @@ void draw() {
     textAlign(CENTER);
     text("GAME OVER", width/2, height/2);
     break;
+
   }
+
+
+
 }

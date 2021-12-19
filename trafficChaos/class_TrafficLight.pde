@@ -2,24 +2,21 @@ class TrafficLight {
 
   String state;
   int stateTimer;
-  float xpos, ypos;
+  PVector streetPos;
+  PVector renderPos;
 
-  PVector position; // Initially this class was made without vectors but other classes need them
-
-  TrafficLight(float _xpos, float _ypos) {
-    xpos = _xpos;
-    ypos = _ypos;
+  TrafficLight(float _streetXpos, float _streetYpos, float _renderXpos, float _renderYpos) {
+    streetPos = new PVector(_streetXpos, _streetYpos);
+    renderPos = new PVector(_renderXpos, _renderYpos);
     state = "RED";
     stateTimer = millis();
-
-    position = new PVector(xpos, ypos);
   }
 
   void render(boolean lightsR, boolean lightsY, boolean lightsG, boolean walkOn) {
     // Renders the trafficlight with walksignal and button at xpos, ypos
 
     pushMatrix();
-    translate(xpos - 5, ypos - 100);
+    translate(renderPos.x - 5, renderPos.y - 100);
     renderTrafficLight(lightsR, lightsY, lightsG);
     renderWalkSignal(walkOn);
     renderButton(true);
@@ -161,7 +158,7 @@ class TrafficLight {
 
   boolean buttonPressed() {
     // Returns true if the button is pressed, false otherwise
-    if (mousePressed && sqrt(sq(mouseX-(xpos - 5 + 35))+sq(mouseY-(ypos - 100 + 45))) < 4) {
+    if (mousePressed && sqrt(sq(mouseX-(renderPos.x - 5 + 35))+sq(mouseY-(renderPos.y - 100 + 45))) < 4) {
       return true;
     } else {
       return false;

@@ -79,7 +79,7 @@ class Car{
     void checkStopLights(ArrayList<TrafficLight> lights){
         state = "DRIVE";
         for(TrafficLight light : lights){
-            if (position.dist(light.position) < 150 && light.state == "RED"){
+            if (position.dist(light.streetPos) < 150 && light.state == "RED"){
                 state = "STOP";
                 break;
             }
