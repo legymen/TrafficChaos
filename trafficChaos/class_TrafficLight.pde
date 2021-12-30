@@ -78,9 +78,10 @@ class TrafficLight {
 
     rectMode(CORNER);
 
-    // Render the "box"
+    // Render the "box" and "pole"
     fill(black);
-    rect(0, 0, 10, 30);
+    rect(0, 0, 14, 40);
+    rect(5, 40, 4, 70);
 
     // Render red light if on
     if (redOn) {
@@ -88,7 +89,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(5, 5, 7.5, 7.5);
+    ellipse(7, 8, 10, 10);
 
     // Render yellow light if on
     if (yellowOn) {
@@ -96,7 +97,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(5, 15, 7.5, 7.5);
+    ellipse(7, 20, 10, 10);
 
     // Render green light if on
     if (greenOn) {
@@ -104,7 +105,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(5, 25, 7.5, 7.5);
+    ellipse(7, 32, 10, 10);
   }
 
   void renderWalkSignal(boolean walk) {
@@ -117,9 +118,10 @@ class TrafficLight {
 
     rectMode(CORNER);
 
-    // Render the "box"
+    // Render the "box" AND "pole"
     fill(black);
-    rect(30, 0, 10, 20);
+    rect(30, 0, 14, 28);
+    rect(35, 28, 4, 72);
 
     // Render red light if on
     if (walk) {
@@ -127,7 +129,7 @@ class TrafficLight {
     } else {
       fill(redLight);
     }
-    ellipse(35, 5, 7.5, 7.5);
+    ellipse(37, 8, 10, 10);
 
     // Render green light if on
     if (walk) {
@@ -135,7 +137,7 @@ class TrafficLight {
     } else {
       fill(offLight);
     }
-    ellipse(35, 15, 7.5, 7.5);
+    ellipse(37, 20, 10, 10);
   }
 
   void renderButton(boolean buttonOn) {
@@ -146,19 +148,19 @@ class TrafficLight {
 
     fill(black);
     rectMode(CORNER);
-    rect(30, 40, 10, 10);
+    rect(30, 40, 14, 14);
 
     if (buttonOn) {
       fill(buttonOnColor);
     } else {
       fill(buttonOffColor);
     }
-    ellipse(35, 45, 3.6, 3.6);
+    ellipse(37, 47, 12, 12);
   }
 
   boolean buttonPressed() {
     // Returns true if the button is pressed, false otherwise
-    if (mousePressed && sqrt(sq(mouseX-(renderPos.x - 5 + 35))+sq(mouseY-(renderPos.y - 100 + 45))) < 4) {
+    if (mousePressed && sqrt(sq(mouseX-(renderPos.x - 5 + 37))+sq(mouseY-(renderPos.y - 100 + 47))) < 6) {
       return true;
     } else {
       return false;

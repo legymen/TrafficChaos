@@ -6,7 +6,7 @@ String LIGHTS_POS_FILE = "textfiles/lightsPos.txt";
 
 // Settings variables
 int numberOfWalkers = 2;
-int numberOfCars = 0;
+int numberOfCars = 5;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
 float carMaxSpeed = 2.8;
@@ -35,28 +35,15 @@ void setup() {
 
   bg = loadImage(BACKGROUND_FILE);
 
-  // Initialize the paths
+  // Initialize
   path_cars = new Path();
   path_walkers = new Path();
-
-  // Initialize the car-arraylist and add the cars
   cars = new ArrayList<Car>();
-  for (int i = 0; i < numberOfCars; i++) {
-    cars.add(new Car(new PVector(random(0, width), random(0, height)), carMaxSpeed, carMaxForce));
-  }
-
-  // Initialize the walker-arraylist and add the walkers
   walkers = new ArrayList<Walker>();
-  for (int i = 0; i < numberOfWalkers; i++) {
-    walkers.add(new Walker(new PVector(random(0, width), random(0, height)), walkerMaxSpeed, walkerMaxForce));
-  }
-
-  // Initialize the light-arraylist
   lights = new ArrayList<TrafficLight>();
-
   dash = new Dash();
 
-  // read carPath from file
+ // read carPath from file
   String[] carPathPos = loadStrings(CAR_PATH_FILE);
   String[] carPathCoords = split(join(carPathPos, ','), ",,");
 
@@ -76,13 +63,25 @@ void setup() {
     path_walkers.addPoint(wcoord[0], wcoord[1]);
   }
 
-  // read lights from file
+  // read lights from file and add them
   String[] lightsPos = loadStrings(LIGHTS_POS_FILE);
 
   for(String s : lightsPos){
     float[] lcoord = float(split(s, ' '));
     lights.add(new TrafficLight(lcoord[0], lcoord[1], lcoord[2], lcoord[3]));
   }
+
+  // add the cars
+  for (int i = 0; i < numberOfCars; i++) {
+    PVector place = path_cars.getRandom();
+    cars.add(new Car(new PVector(place.x, place.y), carMaxSpeed, carMaxForce));
+  }
+
+  // add the walkers
+  for (int i = 0; i < numberOfWalkers; i++) {
+    walkers.add(new Walker(new PVector(random(0, width), random(0, height)), walkerMaxSpeed, walkerMaxForce));
+  }
+ 
 }
 
 void draw() {

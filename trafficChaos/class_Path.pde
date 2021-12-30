@@ -26,6 +26,10 @@ class Path {
         return points.get(points.size() - 1);
     }
 
+    PVector getRandom(){
+        return points.get(int(random(0, points.size())));
+    }
+
     void render(){
         stroke(175);
         strokeWeight(radius*2);
