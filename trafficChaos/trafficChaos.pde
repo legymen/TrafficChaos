@@ -6,7 +6,7 @@ String LIGHTS_POS_FILE = "textfiles/lightsPos.txt";
 
 // Settings variables
 int numberOfWalkers = 2;
-int numberOfCars = 3;
+int numberOfCars = 0;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
 float carMaxSpeed = 2.8;
@@ -25,6 +25,8 @@ Path path_cars, path_walkers;
 ArrayList<Car> cars;
 ArrayList<Walker> walkers;
 ArrayList<TrafficLight> lights;
+
+Dash dash;
 
 PImage bg;
 
@@ -51,6 +53,8 @@ void setup() {
 
   // Initialize the light-arraylist
   lights = new ArrayList<TrafficLight>();
+
+  dash = new Dash();
 
   // read carPath from file
   String[] carPathPos = loadStrings(CAR_PATH_FILE);
@@ -86,7 +90,7 @@ void draw() {
 
   switch(gameState) {
 
-    //*********RUN**********
+    //*********GAMESTATE RUN**********
     case("RUN"):
 
     // Make the walkers follow the path and render them
@@ -111,10 +115,14 @@ void draw() {
       TrafficLight light = lights.get(i);
       light.update();
     }
+
+    // Update the dash
+    dash.run();
+    
     break;
 
 
-    //**********GAME_OVER*************
+    //**********GAMESTATE GAME_OVER*************
     case("GAME_OVER"):
     background(0);
     textSize(100);
