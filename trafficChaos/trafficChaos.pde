@@ -5,8 +5,8 @@ String WALKER_PATH_FILE = "textfiles/walkerPathPos.txt";
 String LIGHTS_POS_FILE = "textfiles/lightsPos.txt";
 
 // Settings variables
-int numberOfWalkers = 0;
-int numberOfCars = 5;
+int numberOfWalkers = 1;
+int numberOfCars = 12;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
 float carMaxSpeed = 2.8;

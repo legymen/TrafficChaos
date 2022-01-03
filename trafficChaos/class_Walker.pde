@@ -68,7 +68,7 @@ class Walker{
     }
 
     void render(){
-
+        imageMode(CENTER);
         if(inMotion){
             image(movement[currentDirection][1 + int(currentFrame)], position.x, position.y - 56);
         } else {
