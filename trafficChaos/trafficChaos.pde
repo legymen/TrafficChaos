@@ -5,7 +5,7 @@ String WALKER_PATH_FILE = "textfiles/walkerPathPos.txt";
 String LIGHTS_POS_FILE = "textfiles/lightsPos.txt";
 
 // Settings variables
-int numberOfWalkers = 2;
+int numberOfWalkers = 0;
 int numberOfCars = 5;
 float walkerMaxSpeed = 0.8;
 float walkerMaxForce = 0.02;
@@ -38,28 +38,26 @@ void setup() {
   // Initialize
   path_cars = new Path();
   path_walkers = new Path();
+  lights = new ArrayList<TrafficLight>();
+
   cars = new ArrayList<Car>();
   walkers = new ArrayList<Walker>();
-  lights = new ArrayList<TrafficLight>();
+  
   dash = new Dash();
 
  // read carPath from file
   String[] carPathPos = loadStrings(CAR_PATH_FILE);
-  String[] carPathCoords = split(join(carPathPos, ','), ",,");
 
-  float[] coord;
-  for (int i = 0; i < carPathCoords.length; i++) {
-    coord = float(split(carPathCoords[i], ' '));
-    path_cars.addPoint(coord[0], coord[1]);
+  for (String s : carPathPos) {
+    float[] ccoord = float(split(s, ' '));
+    path_cars.addPoint(ccoord[0], ccoord[1]);
   }
 
   // read walkerPath from file
   String[] walkerPathPos = loadStrings(WALKER_PATH_FILE);
-  String[] walkerPathCoords = split(join(walkerPathPos, ','), ",,");
 
-  float[] wcoord;
-  for (int i = 0; i < walkerPathCoords.length; i++) {
-    wcoord = float(split(walkerPathCoords[i], ' '));
+  for (String s : walkerPathPos) {
+    float[] wcoord = float(split(s, ' '));
     path_walkers.addPoint(wcoord[0], wcoord[1]);
   }
 
@@ -73,13 +71,14 @@ void setup() {
 
   // add the cars
   for (int i = 0; i < numberOfCars; i++) {
-    PVector place = path_cars.getRandom();
-    cars.add(new Car(new PVector(place.x, place.y), carMaxSpeed, carMaxForce));
+    PVector spawn = path_cars.getRandom();
+    cars.add(new Car(new PVector(spawn.x, spawn.y), carMaxSpeed, carMaxForce));
   }
 
   // add the walkers
   for (int i = 0; i < numberOfWalkers; i++) {
-    walkers.add(new Walker(new PVector(random(0, width), random(0, height)), walkerMaxSpeed, walkerMaxForce));
+    PVector spawn = path_walkers.getRandom();
+    walkers.add(new Walker(new PVector(spawn.x, spawn.y), walkerMaxSpeed, walkerMaxForce));
   }
  
 }
