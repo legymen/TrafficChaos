@@ -76,14 +76,14 @@ class Car{
         }
     }
 
-    void checkStopLights(ArrayList<TrafficLight> lights){
-        state = "DRIVE";
+    void checkStopLights(ArrayList<TrafficLight> lights){     
         for(TrafficLight light : lights){
-            if (position.dist(light.streetPos) < 150 && light.state == "RED"){
+            if (position.dist(light.streetPos) < 100 && light.state == "RED"){
                 state = "STOP";
-                break;
+                return;
             }
         }
+        state = "DRIVE";
     }
 
     void applyForce(PVector force) {
