@@ -30,7 +30,7 @@ class TrafficLight {
 
     case "RED":
       render(true, false, false, true);
-      if (millis() - stateTimer > 2000) {
+      if (millis() - stateTimer > 5000) {
         state = "RED_YELLOW";
         stateTimer = millis();
       }
@@ -38,7 +38,7 @@ class TrafficLight {
 
     case "RED_YELLOW":
       render(true, true, false, false);
-      if (millis() - stateTimer > 2000) {
+      if (millis() - stateTimer > 2500) {
         state = "GREEN";
         stateTimer = millis();
       }
@@ -46,15 +46,11 @@ class TrafficLight {
 
     case "GREEN":
       render(false, false, true, false);
-      if (millis() - stateTimer > 2000) {
-        state = "YELLOW";
-        stateTimer = millis();
-      }
       break;
 
     case "YELLOW":
       render(false, true, false, false);
-      if (millis() - stateTimer > 2000) {
+      if (millis() - stateTimer > 2500) {
         state = "RED";
         stateTimer = millis();
       }
@@ -63,7 +59,7 @@ class TrafficLight {
 
     //Check the button every frame
     if (buttonPressed()) {
-      state = "RED";
+      state = "YELLOW";
     }
   }
 

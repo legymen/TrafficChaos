@@ -12,9 +12,6 @@ float walkerMaxForce = 0.02;
 float carMaxSpeed = 2.8;
 float carMaxForce = 0.05;
 
-// Used for detecting mousepress
-boolean mpressed = false;
-
 // State varable for the game
 String gameState = "RUN";
 
@@ -72,13 +69,13 @@ void setup() {
   // add the cars
   for (int i = 0; i < numberOfCars; i++) {
     PVector spawn = path_cars.getRandom();
-    cars.add(new Car(new PVector(spawn.x, spawn.y), carMaxSpeed, carMaxForce));
+    cars.add(new Car(new PVector(spawn.x, spawn.y), carMaxSpeed + random(-0.2, 0.2), carMaxForce));
   }
 
   // add the walkers
   for (int i = 0; i < numberOfWalkers; i++) {
     PVector spawn = path_walkers.getRandom();
-    walkers.add(new Walker(new PVector(spawn.x, spawn.y), walkerMaxSpeed, walkerMaxForce));
+    walkers.add(new Walker(new PVector(spawn.x, spawn.y), walkerMaxSpeed+ random(-0.1, 0.1), walkerMaxForce));
   }
  
 }

@@ -9,7 +9,7 @@ class Path {
     float radius;
 
     Path(){
-        radius = 20;
+        radius = 10;
         points = new ArrayList<PVector>();
     }
 
